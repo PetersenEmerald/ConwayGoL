@@ -13,6 +13,10 @@ namespace ConwayGoL
 {
     public partial class Form1 : Form
     {
+
+        int homeDimensions = 10;
+        int homeArea = 200;
+
         public Form1()
         {
             InitializeComponent();
@@ -23,15 +27,13 @@ namespace ConwayGoL
 
         }
 
-        
-
         private void startButton_Click(object sender, EventArgs e)
         {
+            startButton.Enabled = false;
+
             Graphics drawBoard = this.CreateGraphics();
 
             Pen boardCreator = new Pen(Color.Black, 1);
-            int homeDimensions = 10;
-            int homeArea = 200;
 
             BoardDesign.DrawSectionOfBoard(homeDimensions, homeArea, boardCreator, drawBoard);
 
@@ -41,7 +43,8 @@ namespace ConwayGoL
 
         private void cycleButton_Click(object sender, EventArgs e)
         {
-
+            Graphics populateCells = this.CreateGraphics();
+            LiveCells.CycleState(homeArea, homeDimensions, populateCells);
         }
     }
 }

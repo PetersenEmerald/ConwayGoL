@@ -23,19 +23,6 @@ namespace ConwayGoL
             }
         }
 
-        private void DrawLiveCell(int homeDimensions, int homeArea, Pen penStyle, Graphics graphicToBeDrawn, bool drawBoard)
-        {
-            Random randomLocation = new Random();
-            int cellStateLocationX = randomLocation.Next(0, homeArea / homeDimensions);
-            int cellStateLocationY = randomLocation.Next(0, homeArea / homeDimensions);
-
-            LiveCells.PopulateCell(cellStateLocationX, cellStateLocationY);
-
-            DrawSection(homeDimensions, penStyle, graphicToBeDrawn,
-                cellStateLocationX * homeDimensions,
-                cellStateLocationY * homeDimensions);
-        }
-
         static public void DrawSection(int homeDimensions, Pen penStyle, Graphics graphicToBeDrawn, int x, int y)
         {
             graphicToBeDrawn.DrawRectangle(penStyle, x, y, homeDimensions, homeDimensions);
