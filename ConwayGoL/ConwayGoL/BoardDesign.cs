@@ -5,27 +5,38 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
-
+using System.Configuration;
 
 namespace ConwayGoL
 {
     class BoardDesign : Form
     {
-        
-        static public void DrawSectionOfBoard(int homeDimensions, int homeArea, Pen penStyle, Graphics graphicToBeDrawn)
+        static readonly int populationArea = Convert.ToInt32(ConfigurationManager.AppSettings["populationArea"]);
+        static readonly int cellDimensions = Convert.ToInt32(ConfigurationManager.AppSettings["cellDimensions"]);
+
+        //Create the initial board's dimensions.
+        static public void DrawSectionOfBoard(Color drawColor, Graphics graphicToBeDrawn)
         {
-            for (int x = 0; x < homeArea; x = x + homeDimensions)
+            for (int x = 0; x < populationArea; x = x + cellDimensions)
             {
-                for (int y = 0; y < homeArea; y = y + homeDimensions)
+                for (int y = 0; y < populationArea; y = y + cellDimensions)
                 {
-                    DrawSection(homeDimensions, penStyle, graphicToBeDrawn, x, y);
+                    DrawSection(drawColor, graphicToBeDrawn, x, y);
                 }
             }
         }
 
-        static public void DrawSection(int homeDimensions, Pen penStyle, Graphics graphicToBeDrawn, int x, int y)
+        static public void DrawSection(Color color, Graphics graphicToBeDrawn, int x, int y)
         {
-            graphicToBeDrawn.DrawRectangle(penStyle, x, y, homeDimensions, homeDimensions);
+            //Colors inside of cell.
+            Brush inUseColor = new SolidBrush(color);
+            Rectangle locationOfCell = new Rectangle(x, y, 10, 10);
+            Region areaToColor = new Region(locationOfCell);
+            graphicToBeDrawn.FillRegion(inUseColor, areaToColor);
+
+            //Creates border around cell.
+            Pen penColor = new Pen(Color.Black, 1);
+            graphicToBeDrawn.DrawRectangle(penColor, locationOfCell);
 
         }
     }
