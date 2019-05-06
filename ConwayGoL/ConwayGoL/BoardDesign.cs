@@ -30,9 +30,13 @@ namespace ConwayGoL
         {
             //Colors inside of cell.
             Brush inUseColor = new SolidBrush(color);
-            Rectangle locationOfCell = new Rectangle(x, y, 10, 10);
+            Rectangle locationOfCell = new Rectangle(x, y, cellDimensions, cellDimensions);
             Region areaToColor = new Region(locationOfCell);
             graphicToBeDrawn.FillRegion(inUseColor, areaToColor);
+            String cellKey = x.ToString() + y.ToString();
+
+            //Used to show which rectangle refers to which cell.
+            graphicToBeDrawn.DrawString(cellKey, new Font("Tahoma", 8), Brushes.Black, locationOfCell);
 
             //Creates border around cell.
             Pen penColor = new Pen(Color.Black, 1);

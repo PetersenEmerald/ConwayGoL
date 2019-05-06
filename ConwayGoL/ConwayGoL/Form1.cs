@@ -42,5 +42,10 @@ namespace ConwayGoL
             Graphics populateCells = this.CreateGraphics();
             LiveCells.CycleState(populateCells);
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

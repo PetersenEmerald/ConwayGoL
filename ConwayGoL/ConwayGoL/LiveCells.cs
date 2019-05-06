@@ -5,12 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Configuration;
+using System.Collections.Generic;
 
 namespace ConwayGoL
 {
     class LiveCells
     {
-        static Hashtable cells = new Hashtable();
+        //static Hashtable cells = new Hashtable();
+
+        static CellTable cellTable = new CellTable();
+
         static readonly int populationArea = Convert.ToInt32(ConfigurationManager.AppSettings["populationArea"]);
         static readonly int cellDimensions = Convert.ToInt32(ConfigurationManager.AppSettings["cellDimensions"]);
 
@@ -21,7 +25,9 @@ namespace ConwayGoL
             {
                 for (int y = 0; y < populationArea; y = y + cellDimensions)
                 {
-                    cells.Add(x + ", " + y, 0);
+                    int cellKey = Convert.ToInt32(string.Format("{0}{1}", x, y));
+                    cellTable.Add(cellKey, 0);
+                    //cells.Add(x + ", " + y, 0);
                 }
             }
         }
@@ -39,100 +45,121 @@ namespace ConwayGoL
             {
                 int x = randomNumber.Next(0, populationArea / cellDimensions) * cellDimensions;
                 int y = randomNumber.Next(0, populationArea / cellDimensions) * cellDimensions;
+                int cellKey = Convert.ToInt32(string.Format("{0}{1}", x, y));
 
-                CellCreator(liveCellInitial, x, y);
+                CellCreator(liveCellInitial, cellKey, x, y);
             }
         }
 
         static public void CycleState(Graphics populateCells)
         {
+            List<int[,]> liveCells = new List<int[,]>();
+            List<int[,]> deadCells = new List<int[,]>();
+
             //Go through all cells on board, alive or dead.
-            for (int x = 0; x < populationArea; x = x + 10)
+            for (int x = 0; x < populationArea; x = x + cellDimensions)
             {
-                for (int y = 0; y < populationArea; y = y + 10)
+                for (int y = 0; y < populationArea; y = y + cellDimensions)
                 {
+                    int[,] coord = new int[,] { { x, y } };
+                    int cellKey = Convert.ToInt32(string.Format("{0}{1}", x, y));
 
-                    int[] coord = { x, y };
-                    String cellCoord = x + ", " + y;
-
-                    int neighbors = NumberOfNeighbors(coord);
+                    int neighbors = NumberOfNeighbors(x, y);
 
                     //If the cell is alive.
-                    if ((int)cells[cellCoord] == 1)
+                    if (cellTable[cellKey] == 1)
                     {
                         //Condition One: If the cell has less than two neighbors, the cell dies.
                         if (neighbors < 2)
                         {
-                            CellKiller(populateCells, x, y);
+                            deadCells.Add(coord);
+                            //CellKiller(populateCells, cellKey, x, y);
                         }
                         //Condition Two: If the cell has more than three neighbors, the cell dies.
                         if (neighbors > 3)
                         {
-                            CellKiller(populateCells, x, y);
+                            deadCells.Add(coord);
+                            //CellKiller(populateCells, cellKey, x, y);
                         }
                     }
 
-                    //If the cell is dead.
-                    if ((int)cells[cellCoord] == 0)
+                    //If the cell is dead and Condition Three: If a dead cell has three neighbors, it comes to life.
+                    if (cellTable[cellKey] == 0 && neighbors == 3)
                     {
-                        //Condition Three: If a dead cell has three neighbors, it comes to life.
-                        if (neighbors == 3)
-                        {
-                            PopulateCell(populateCells, x, y);
-                        }
+                            liveCells.Add(coord);
+                            //PopulateCell(populateCells, cellKey, x, y);                        
                     }                    
                 }
             }
 
+            for (int numDead = 0; numDead < deadCells.Count; numDead++)
+            {
+                int[,] currCell = deadCells.ElementAt(numDead);
+                int x = currCell[0, 0];
+                int y = currCell[0, 1];
+                int cellKey = Convert.ToInt32(string.Format("{0}{1}", x, y));
+
+                CellKiller(populateCells, cellKey, x, y);
+            }
+
+            for (int numLive = 0; numLive < liveCells.Count; numLive++)
+            {
+                int[,] currCell = liveCells.ElementAt(numLive);
+                int x = currCell[0, 0];
+                int y = currCell[0, 1];
+                int cellKey = Convert.ToInt32(string.Format("{0}{1}", x, y));
+
+                PopulateCell(populateCells, cellKey, x, y);
+            }
+
         }
 
-        static private void CellCreator(Graphics liveCellInitial, int x, int y)
+        static private void CellCreator(Graphics liveCellInitial, int cellKey, int x, int y)
         {
-            PopulateCell(liveCellInitial, x, y);
+            PopulateCell(liveCellInitial, cellKey, x, y);
 
-            int currCell = (int)cells[x + ", " + y];
-
-            if (currCell == 1)
+            if (cellTable[cellKey] == 1)
             {
                 BoardDesign.DrawSection(Color.Green, liveCellInitial, x, y);
             }
         }
 
-        static private void CellKiller(Graphics killZone, int x, int y)
+        static private void CellKiller(Graphics killZone, int cellKey, int x, int y)
         {
-            cells[x + ", " + y] = 0;
+            cellTable[cellKey] = 0;
 
             BoardDesign.DrawSection(Color.Red, killZone, x, y);
 
         }
 
-        static public void PopulateCell(Graphics liveZone, int x, int y)
+        static public void PopulateCell(Graphics liveZone, int cellKey, int x, int y)
         {
 
-            cells[x + ", " + y] = 1;
-            BoardDesign.DrawSection(Color.Red, liveZone, x, y);
-
-
+            cellTable[cellKey] = 1;
+            BoardDesign.DrawSection(Color.Green, liveZone, x, y);
         }
 
-        static private int NumberOfNeighbors(int[] coord)
+        static private int NumberOfNeighbors(int x, int y)
         {
             int neighborCount = 0;
+            int holder = 0;
         
             for(int neighborX = -1; neighborX < 2; neighborX++)
             {
                 for(int neighborY = -1; neighborY < 2; neighborY++)
                 {
-                    if(neighborX != 0 && neighborY != 0)
+                    if(!(neighborX == 0 && neighborY == 0))
                     {
-                        int currentNeighborX = (neighborX * 10) + coord[0];
-                        int currentNeighborY = (neighborY * 10) + coord[1];
+                        holder++;
+                        int currentNeighborX = (neighborX * cellDimensions) + x;
+                        int currentNeighborY = (neighborY * cellDimensions) + y;
 
-                        if(currentNeighborX > -1 && currentNeighborX < populationArea &&
+                        if (currentNeighborX > -1 && currentNeighborX < populationArea &&
                             currentNeighborY > -1 && currentNeighborY < populationArea)
                         {
-                            String currentNeighbor = currentNeighborX + ", " + currentNeighborY;
-                            if ((int)cells[currentNeighbor] == 1)
+                            int neighborCellKey = Convert.ToInt32(string.Format("{0}{1}", currentNeighborX, currentNeighborY));
+
+                            if (cellTable[neighborCellKey] == 1)
                             {
                                 neighborCount++;
                             }
