@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Configuration;
@@ -35,8 +31,8 @@ namespace ConwayGoL
             graphicToBeDrawn.FillRegion(inUseColor, areaToColor);
             String cellKey = x.ToString() + y.ToString();
 
-            //Used to show which rectangle refers to which cell.
-            graphicToBeDrawn.DrawString(cellKey, new Font("Tahoma", 8), Brushes.Black, locationOfCell);
+            //Used to show which rectangle refers to which cell for testing purposes.
+            //graphicToBeDrawn.DrawString(cellKey, new Font("Tahoma", 8), Brushes.Black, locationOfCell);
 
             //Creates border around cell.
             Pen penColor = new Pen(Color.Black, 1);

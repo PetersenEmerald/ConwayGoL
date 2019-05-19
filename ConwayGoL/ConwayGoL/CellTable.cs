@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConwayGoL
 {
+    //Hashtable to keep track of live and dead cell state.
     class CellTable
     {
         private List<int> keys = new List<int>();

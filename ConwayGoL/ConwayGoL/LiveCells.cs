@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Configuration;
 using System.Collections.Generic;
@@ -11,8 +8,6 @@ namespace ConwayGoL
 {
     class LiveCells
     {
-        //static Hashtable cells = new Hashtable();
-
         static CellTable cellTable = new CellTable();
 
         static readonly int populationArea = Convert.ToInt32(ConfigurationManager.AppSettings["populationArea"]);
@@ -27,7 +22,6 @@ namespace ConwayGoL
                 {
                     int cellKey = Convert.ToInt32(string.Format("{0}{1}", x, y));
                     cellTable.Add(cellKey, 0);
-                    //cells.Add(x + ", " + y, 0);
                 }
             }
         }
@@ -38,7 +32,6 @@ namespace ConwayGoL
 
             Random randomNumber = new Random();
 
-            //int liveCells = randomNumber.Next(1, populationArea / cellDimensions);
             int liveCells = 100;
 
             for (int numberOfCells = 0; numberOfCells < liveCells; numberOfCells++)
@@ -51,6 +44,7 @@ namespace ConwayGoL
             }
         }
 
+        //Gather information required to determine next cycle state of all cells.
         static public void CycleState(Graphics populateCells)
         {
             List<int[,]> liveCells = new List<int[,]>();
@@ -73,25 +67,23 @@ namespace ConwayGoL
                         if (neighbors < 2)
                         {
                             deadCells.Add(coord);
-                            //CellKiller(populateCells, cellKey, x, y);
                         }
                         //Condition Two: If the cell has more than three neighbors, the cell dies.
                         if (neighbors > 3)
                         {
                             deadCells.Add(coord);
-                            //CellKiller(populateCells, cellKey, x, y);
                         }
                     }
 
                     //If the cell is dead and Condition Three: If a dead cell has three neighbors, it comes to life.
                     if (cellTable[cellKey] == 0 && neighbors == 3)
                     {
-                            liveCells.Add(coord);
-                            //PopulateCell(populateCells, cellKey, x, y);                        
+                            liveCells.Add(coord);                   
                     }                    
                 }
             }
 
+            //Kills cells that did not meet rules to remain alive.
             for (int numDead = 0; numDead < deadCells.Count; numDead++)
             {
                 int[,] currCell = deadCells.ElementAt(numDead);
@@ -102,6 +94,7 @@ namespace ConwayGoL
                 CellKiller(populateCells, cellKey, x, y);
             }
 
+            //Adds cells that have three neighbors.
             for (int numLive = 0; numLive < liveCells.Count; numLive++)
             {
                 int[,] currCell = liveCells.ElementAt(numLive);
@@ -142,18 +135,20 @@ namespace ConwayGoL
         static private int NumberOfNeighbors(int x, int y)
         {
             int neighborCount = 0;
-            int holder = 0;
         
+            //A cell will have eight potential neighbors. Neighbors are represented in their location mathematically compared to the current cell.
             for(int neighborX = -1; neighborX < 2; neighborX++)
             {
                 for(int neighborY = -1; neighborY < 2; neighborY++)
                 {
+
+                    //Not including the current cell.
                     if(!(neighborX == 0 && neighborY == 0))
                     {
-                        holder++;
                         int currentNeighborX = (neighborX * cellDimensions) + x;
                         int currentNeighborY = (neighborY * cellDimensions) + y;
 
+                        //Neighbor is within the boundaries of the population.
                         if (currentNeighborX > -1 && currentNeighborX < populationArea &&
                             currentNeighborY > -1 && currentNeighborY < populationArea)
                         {
