@@ -1,7 +1,7 @@
 # ConwayGoL
 Conway's Game of Life
 
-Conway's Game of Life is a zero player mathematical modeling of population growth.
+Conway's Game of Life is a zero player mathematical modeling of population growth. This coded iteration of the game is modeled after John Horton Conway's rules.
 
 The user starts the game by clicking Start. Cells are randomly populated in the graph.
 
