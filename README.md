@@ -16,7 +16,7 @@ The user continues the game by clicking Cycle. Cells are then put through the fo
   - Cells that are red are in a dead state.
   - Cells that are neither colour have never been used in the current game.
   
- The game was designed using C# with Windows Forms. The goal of the game was to demonstrate basic coding competence by using:
+ The game was designed using C# with Windows Forms in Visual Studio 2017. The goal of the game was to demonstrate basic coding competence by using:
   - Object Oriented Programing Principles
   - Hashtable for Cell Data
   - Agile practices with a Project board that used user stories.
