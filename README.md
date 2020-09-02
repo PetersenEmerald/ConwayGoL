@@ -19,5 +19,5 @@ The user continues the game by clicking Cycle. Cells are then put through the fo
  The game was designed using C# with Windows Forms in Visual Studio 2017. The goal of the game was to demonstrate basic coding competence by using:
   - Object Oriented Programing Principles
   - Hashtable for Cell Data
-  - Agile Practices with a Project Board
+  - Agile Practices with Github Project Board
   - Tools in Windows Forms
