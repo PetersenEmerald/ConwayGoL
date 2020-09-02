@@ -13,10 +13,7 @@ namespace ConwayGoL
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
+        private void Form1_Load(object sender, EventArgs e) { }
 
         private void startButton_Click(object sender, EventArgs e)
         {
@@ -37,54 +34,24 @@ namespace ConwayGoL
             LiveCells.CycleState(populateCells);
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
+        private void label1_Click(object sender, EventArgs e) { }
 
-        }
+        private void textBox1_TextChanged(object sender, EventArgs e) { }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
+        private void textBox1_TextChanged_1(object sender, EventArgs e) { }
 
-        }
+        private void textBox2_TextChanged(object sender, EventArgs e) { }
 
-        private void textBox1_TextChanged_1(object sender, EventArgs e)
-        {
+        private void textBox4_TextChanged(object sender, EventArgs e) { }
 
-        }
+        private void textBox5_TextChanged(object sender, EventArgs e) { }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
+        private void textBox6_TextChanged(object sender, EventArgs e) { }
 
-        }
+        private void textBox9_TextChanged(object sender, EventArgs e) { }
 
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
+        private void textBox10_TextChanged(object sender, EventArgs e) { }
 
-        }
-
-        private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox6_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox9_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox10_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox13_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void textBox13_TextChanged(object sender, EventArgs e) { }
     }
 }
